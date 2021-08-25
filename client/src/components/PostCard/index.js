@@ -3,7 +3,7 @@ import React from 'react'
 const PostCard = ({ title, imgLink, content }) => {
     return (
         <>
-            <div class="container ht-tm-container">
+            <div class="container ht-tm-container mb-5">
                 <div className="row">
                     <div class="col-xl-12">
                         <div class="card">
