@@ -1,15 +1,9 @@
-import logo from './logo.svg';
-import './App.css';
-import Customers from "./components/customers/Customers"
+import Header from './components/Header'
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          <Customers />
-        </p>
-      </header>
+      <Header />
+      <h1 className="text-primary text-center">IIT-BHU-CyberSec-Website</h1>
     </div>
   );
 }
