@@ -1,9 +1,10 @@
 import Header from './components/Header'
+import Main from './components/Main'
 function App() {
   return (
-    <div className="App">
+    <div className="ht-body">
       <Header />
-      <h1 className="text-primary text-center">IIT-BHU-CyberSec-Website</h1>
+      <Main />
     </div>
   );
 }
