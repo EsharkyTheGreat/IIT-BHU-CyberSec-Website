@@ -4,7 +4,7 @@ const Header = () => {
     return (
         <>
             <Navbar />
-            <img src="/images.jpg" alt="hacker"></img>
+            {/* <img src="/images.jpg" alt="hacker"></img> */}
         </>
     )
 }
