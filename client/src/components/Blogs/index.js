@@ -12,7 +12,7 @@ const allPosts = [
         content: "lorem ipsum dolor sit amet, consectetur adipiscing elitlorem ipsum dolor sit amet, consectetur adipiscing elitlorem ipsum dolor sit amet, consectetur adipiscing elitlorem ipsum dolor sit amet, consectetur adipiscing elitlorem ipsum dolor sit amet, consectetur adipiscing elitlorem ipsum dolor sit amet, consectetur adipiscing elitlorem ipsum dolor sit amet, consectetur adipiscing elitlorem ipsum dolor sit amet, consectetur adipiscing elitlorem ipsum dolor sit amet, consectetur adipiscing elit"
     }
 ]
-const PostCards = () => {
+const Blogs = () => {
     return (
         <>
             {allPosts.map((post) => (
@@ -22,4 +22,4 @@ const PostCards = () => {
     )
 }
 
-export default PostCards
+export default Blogs
