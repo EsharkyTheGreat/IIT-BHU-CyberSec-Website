@@ -19,8 +19,10 @@
   },
   "homepage": "https://github.com/IIT-BHU-CyberSec/IIT-BHU-CyberSec-Website#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "concurrently": "^6.2.1",
     "express": "^4.17.1",
+    "mongodb": "^4.1.1",
     "nodemon": "^2.0.12",
     "react-router-dom": "^5.2.0"
   }
