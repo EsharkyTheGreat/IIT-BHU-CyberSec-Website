@@ -4,6 +4,9 @@ import About from './components/About'
 import BlogsRoute from './components/BlogsRoute'
 import { Switch, Route } from "react-router-dom";
 function App() {
+  fetch("http://localhost:5000/api/blogs/1")
+    .then(res => res.json())
+    .then(res => console.log(res.content))
   return (
     <div>
       <Header />

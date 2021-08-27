@@ -4,12 +4,14 @@ import Markdown from 'markdown-to-jsx';
 const Post = (props) => {
     const [content, setContent] = useState({ md: "" });
     useEffect(() => {
-        fetch(post1)
-            .then((res) => res.text())
-            .then((md) => {
-                setContent({ md })
+        fetch("http://localhost:5000/api/blogs/1")
+            .then((res) => res.json())
+            .then((res) => {
+                const md = res.content
+                setContent({ md });
             })
     }, [])
+
     return (
         <>
             <h2>Post {parseInt(props.match.params.id, 10)} </h2>
