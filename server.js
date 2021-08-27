@@ -31,7 +31,14 @@ MongoClient.connect("mongodb+srv://<user>:<pass>@cluster0.6cs8u.mongodb.net/blog
         console.log("Connected to db");
         const blogs = db.collection('blogs');
 
-        
+        app.get('/api/blogs',(req,res) =>{
+            db.collection('blogs').find().toArray()
+            .then(results =>{
+                res.send(results);
+            })
+            .catch(error => console.error(error))
+        })
+
         app.get('/api/blogs/:id', (req,res) =>{ //api for getting blogs
             db.collection('blogs').find({'id':req.params.id}).toArray()
             .then(results =>{
