@@ -35,12 +35,20 @@ MongoClient.connect("mongodb://localhost:27017/blogdb", { useUnifiedTopology: tr
         const blogs = db.collection('blogs');
 
 
-        app.get('/api/blogs/:id', (req, res) => { //api for getting blogs
-            blogs.findOne({ 'id': Number(req.params.id) })
-                .then(results => {
-                    res.send(results);
-                })
-                .catch(errors => console.error(errors))
+        app.get('/api/blogs',(req,res) =>{
+            db.collection('blogs').find().toArray()
+            .then(results =>{
+                res.send(results);
+            })
+            .catch(error => console.error(error))
+        })
+
+        app.get('/api/blogs/:id', (req,res) =>{ //api for getting blogs
+            db.collection('blogs').find({'id':req.params.id}).toArray()
+            .then(results =>{
+                res.send(results);
+            })
+            .catch(errors => console.error(errors))
             // res.send(req.query);    //format of req is id, name, content(in md) 
         })
     })
