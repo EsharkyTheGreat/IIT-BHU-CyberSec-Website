@@ -1,12 +1,19 @@
 import { Component } from "react"
 import Prism from "prismjs"
-
+import moment from "moment"
 import "prismjs/plugins/line-numbers/prism-line-numbers.js"
 import "prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js"
-
+import getBlogPostByUrlTitle from "../../api/getBlogPostByUrlTitle.js"
 import Header from "../../components/Header.js"
 
 export default class extends Component {
+    static async getInitialProps({ query }) {
+        const apiResult = await getBlogPostByUrlTitle(query.title)
+
+        return {
+            post: apiResult && apiResult.post
+        }
+    }
     componentDidMount() {
         Prism.highlightAll()
     }
@@ -91,6 +98,21 @@ export default class extends Component {
                         </div>
                         <img src="https://assets.coderrocketfuel.com/css-article-image.png" />
                         <blockquote>Warning or special message that you want to stand out should be placed in this blockquote element.</blockquote>
+                        {
+                            this.props.post.tags.map((tag, index) => {
+                                return (
+                                    <a
+                                        className="blog-post-top-tag-btn"
+                                        key={index}
+                                        href={`/blog/tags/${tag}`}
+                                    >
+                                        <span>{tag}</span>
+                                    </a>
+                                )
+                            })
+                        }
+                        <span>{moment.unix(this.props.post.dateTimestamp).format("MMMM Do, YYYY")}</span>
+                        <div dangerouslySetInnerHTML={{ __html: this.props.post.markdownContent }} className="blog-post-body-content"></div>
                     </div>
                 </div>
             </div>
