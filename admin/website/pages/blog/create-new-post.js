@@ -5,12 +5,23 @@ import { Controlled as CodeMirror } from "react-codemirror2"
 
 import Header from "../../components/header.js"
 import Sidebar from "../../components/sidebar.js"
+import authUser from "../../api/admin-user/auth.js"
 
 if (typeof navigator !== "undefined") {
     require("codemirror/mode/markdown/markdown")
 }
 
 export default class extends Component {
+    static async getInitialProps({ req, res }) {
+        const authResult = await authUser(req)
+
+        if (!authResult.success) {
+            res.writeHead(302, { Location: "/login" })
+            res.end()
+        }
+
+        return {}
+    }
     constructor(props) {
         super(props)
         this.state = {
