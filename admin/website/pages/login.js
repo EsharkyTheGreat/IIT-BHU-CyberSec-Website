@@ -1,7 +1,18 @@
 import React, { Component } from "react"
 import Head from "next/head"
-
+import login from "../api/admin-user/login.js"
+import authUser from "../api/admin-user/auth.js"
 export default class extends Component {
+    static async getInitialProps({ req, res }) {
+        const authResult = await authUser(req)
+
+        if (authResult.success) {
+            res.writeHead(302, { Location: "/" })
+            res.end()
+        }
+
+        return {}
+    }
     constructor(props) {
         super(props)
         this.state = {
@@ -29,7 +40,27 @@ export default class extends Component {
     }
 
     submitLoginRequest = () => {
-        this.setState({ loading: true })
+        if (!this.state.emailInputValue || !this.state.passwordInputValue) {
+            if (!this.state.emailInputValue) this.setState({ emailRequiredError: true })
+            if (!this.state.passwordInputValue) this.setState({ passwordRequiredError: true })
+        } else {
+            this.setState({ loading: true })
+
+            const self = this
+
+            login(this.state.emailInputValue, this.state.passwordInputValue, function (apiResponse) {
+                if (!apiResponse.success) {
+                    self.setState({
+                        loading: false,
+                        credentialError: true,
+                        emailRequiredError: false,
+                        passwordRequiredError: false
+                    })
+                } else {
+                    window.location.href = "/"
+                }
+            })
+        }
     }
 
     render() {
