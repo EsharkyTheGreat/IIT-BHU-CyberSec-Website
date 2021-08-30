@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import Head from "next/head"
 import login from "../api/admin-user/login.js"
 import authUser from "../api/admin-user/auth.js"
+import removeAdminUserCookie from "../api/admin-user/removeAdminUserCookie.js"
 export default class extends Component {
     static async getInitialProps({ req, res }) {
         const authResult = await authUser(req)
@@ -23,6 +24,9 @@ export default class extends Component {
             passwordInputValue: "",
             passwordRequiredError: false
         }
+    }
+    componentDidMount() {
+        removeAdminUserCookie()
     }
 
     updateEmailInputValue = (event) => {
