@@ -1,9 +1,12 @@
-import React, { Component } from "react"
+import { Component } from "react"
 import Head from "next/head"
 
 import Header from "../../components/header.js"
 import Sidebar from "../../components/sidebar.js"
+
 import authUser from "../../api/admin-user/auth.js"
+import checkIfImageFilenameExists from "../../api/images/checkIfImageFilenameExists.js"
+import uploadImage from "../../api/images/uploadImage.js"
 
 export default class extends Component {
     static async getInitialProps({ req, res }) {
@@ -16,6 +19,7 @@ export default class extends Component {
 
         return {}
     }
+
     constructor(props) {
         super(props)
         this.state = {
@@ -36,7 +40,94 @@ export default class extends Component {
     uploadImageRequest = (event) => {
         event.preventDefault()
 
-        // api request goes here
+        let formData = new FormData()
+        formData.append("selectedFile", this.state.selectedFile)
+
+        if (!this.state.selectedFile) {
+            this.setState({
+                loading: false,
+                submitError: false,
+                filenameExistsError: false,
+                noFileError: true,
+                filenameSpacesError: false,
+                success: false
+            })
+        } else if (this.state.selectedFile.name.indexOf(" ") !== -1) {
+            this.setState({
+                loading: false,
+                submitError: false,
+                filenameExistsError: false,
+                noFileError: false,
+                filenameSpacesError: true,
+                success: false
+            })
+        } else {
+            this.setState({
+                loading: true,
+                submitError: false,
+                filenameExistsError: false,
+                noFileError: false,
+                filenameSpacesError: false,
+                success: false
+            })
+
+            const self = this
+
+            checkIfImageFilenameExists(this.state.selectedFile.name, function (existsResponse) {
+                if (!existsResponse.success) {
+                    self.setState({
+                        loading: false,
+                        submitError: false,
+                        filenameExistsError: true,
+                        noFileError: false,
+                        filenameSpacesError: false,
+                        success: false
+                    })
+                } else {
+                    uploadImage(formData, function (apiResponse) {
+                        if (apiResponse.submitError) {
+                            self.setState({
+                                loading: false,
+                                submitError: true,
+                                filenameExistsError: false,
+                                noFileError: false,
+                                filenameSpacesError: false,
+                                success: false
+                            })
+                        } else if (!apiResponse.authSuccess) {
+                            window.location.href = "/login"
+                        } else if (apiResponse.noFileError) {
+                            self.setState({
+                                loading: false,
+                                submitError: false,
+                                filenameExistsError: false,
+                                noFileError: true,
+                                filenameSpacesError: false,
+                                success: false
+                            })
+                        } else if (!apiResponse.success) {
+                            self.setState({
+                                loading: false,
+                                submitError: true,
+                                filenameExistsError: false,
+                                noFileError: false,
+                                filenameSpacesError: false,
+                                success: false
+                            })
+                        } else {
+                            self.setState({
+                                loading: false,
+                                submitError: false,
+                                filenameExistsError: false,
+                                noFileError: false,
+                                filenameSpacesError: false,
+                                success: true
+                            })
+                        }
+                    })
+                }
+            })
+        }
     }
 
     render() {
